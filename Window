@@ -1,0 +1,60 @@
+import javax.swing.*;
+import javax.swing.ImageIcon;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Window extends JPanel{
+
+    Image img = new ImageIcon ("your/path/here.jpg").getImage(); //your image's path
+    public static JFrame frame;
+
+    int y = 540; //initial JFrame y
+    int x = 960;  //initial JFrame x
+    
+    int y1; //Picture y
+    int x1; //Picture x
+    
+    Window(){
+
+        frame = new JFrame("Window");
+        frame.setLocation(0, 0);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setSize(x, y); //Initial JFrame size, must be filled
+        frame.setResizable(true); 
+        frame.setLocationRelativeTo(null);
+        this.setLayout(null);
+        frame.add(this);
+        frame.setVisible(true);
+        
+        Timer timer = new Timer (5, new ActionListener() {  //Timer will help us to start rerepaint() every 5 (optional) ticks
+            public void actionPerformed (ActionEvent e) {
+                rerepaint();
+                Window.this.repaint(); //repaint is important for JPanel to work
+            }
+
+        });
+        
+        timer.start();
+        
+    }
+
+    void rerepaint(){
+    
+        if (frame.getHeight() != y) {
+            y = frame.getHeight(); //y will change every time when you resize your frame
+        }
+        
+        if (frame.getWidth() != x) {
+            x = frame.getWidth(); //so will x
+        }
+        
+        y1 = y; //here we equal picture's y and frame's y
+        x1 = x; //so we do with both x
+        
+    }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, x1, y1, null); //here our picture is painted
+    }
+}
